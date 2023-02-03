@@ -1,0 +1,100 @@
+#ref {
+	position: fixed;
+	margin: auto;
+	width: 80%;
+	left: 0;
+	right: 0;
+	border: 2px solid grey;
+	border-radius: 10px;
+	box-shadow: 0 2px 1px 1px grey;
+
+	&.open {
+		transition: height 1s linear;
+	}
+
+	&.closed {
+		transition: height 1s linear;
+	}
+
+	& > .draggable {
+		height: 70px;
+	}
+
+	&.transition {
+		transition: top 0.2s linear;
+	}
+}
+
+.carousel {
+	height: 100vh;
+	width: 100%;
+	$mapic: (
+		'first': red,
+		'second': blue,
+		'third': yellow,
+		'fourth': green,
+	);
+
+	.img-container {
+		width: 50vw;
+		height: 30vh;
+
+		& > * {
+			width: 100%;
+			height: 100%;
+		}
+
+		@each $class, $value in $mapic {
+			&.#{$class} {
+				background-color: $value;
+			}
+		}
+	}
+
+	@mixin box($color: null) {
+		height: 200px;
+		width: 50%;
+		background-color: $color;
+
+		@content
+	}
+
+	@mixin absoluteBox($rotation) {
+		$rotate: nill;
+		@if $rotation == "left" {
+			$rotate: rotate3d(0, 1, 0, -90deg)
+		} @else if $rotation == "right" {
+			$rotate: rotate3d(0, 1, 0, 90deg)
+		} @else if $rotation == "back" {
+			$rotate: rotate3d(0, 0, 1, 180deg)
+		} @else {
+			$rotate: ''
+		}
+
+		position: absolute;
+		transform: translateY(-100%) $rotate;
+	}
+
+	.test {
+		@include box(red) {
+			margin-block-start: 100px;
+		}
+		perspective: 1000px
+	}
+	.test1 {
+		@include box(blue);
+		@include absoluteBox(null);
+	}
+	.test2 {
+		@include box(red);
+		@include absoluteBox("left");
+	}
+	.test3 {
+		@include box(yellow);
+		@include absoluteBox("right");
+	}
+	.test4 {
+		@include box(green);
+		@include absoluteBox("back");
+	}
+}
